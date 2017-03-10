@@ -29,6 +29,7 @@
 		581773AB1E37A2DB004E28A9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773A41E37A2DB004E28A9 /* OpenGLES.framework */; };
 		581773AC1E37A2DB004E28A9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773A51E37A2DB004E28A9 /* QuartzCore.framework */; };
 		581773AE1E37A7EF004E28A9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773AD1E37A7EF004E28A9 /* UIKit.framework */; };
+		F6709847DF5C9D1F3C6DFEA8 /* moe-main-interfaces.m in Sources */ = {isa = PBXBuildFile; fileRef = A018FC2BDEEB04DB304D2C97 /* moe-main-interfaces.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		58C6F5241DA66CB600309CB6 /* my-gdx-game.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "my-gdx-game.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		58C6F5381DA66CB600309CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8084D1F0A307440EC73CBFCA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		A018FC2BDEEB04DB304D2C97 /* moe-main-interfaces.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "moe-main-interfaces.m"; path = "../build/moe/main/ui-headers/moe-main-interfaces.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 				5863B87C1DA682C800E46B6A /* ios-moe-Test */,
 				58C6F5251DA66CB600309CB6 /* Products */,
 				5817739E1E37A2DA004E28A9 /* Frameworks */,
+				9321BAC1BB8E4182ACD9CFB0 /* Multi-OS Engine */,
 			);
 			sourceTree = "<group>";
 		};
@@ -167,6 +170,14 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		9321BAC1BB8E4182ACD9CFB0 /* Multi-OS Engine */ = {
+			isa = PBXGroup;
+			name = "Multi-OS Engine";
+			sourceTree = "<group>";
+			children = (
+				A018FC2BDEEB04DB304D2C97 /* moe-main-interfaces.m */,
+			);
 		};
 /* End PBXGroup section */
 
@@ -317,6 +328,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16479D2CDCAC394B9A9722FE /* main.cpp in Sources */,
+				F6709847DF5C9D1F3C6DFEA8 /* moe-main-interfaces.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +363,7 @@
 					"$(inherited)",
 					"${MOE_OTHER_LDFLAGS}",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mygdx.game";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mygdx.game;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 			};
@@ -385,7 +397,7 @@
 					"$(inherited)",
 					"${MOE_OTHER_LDFLAGS}",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mygdx.game";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mygdx.game;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 			};
@@ -509,7 +521,7 @@
 					"${MOE_OTHER_LDFLAGS}",
 					"$(LIBGDX_NATIVES)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mygdx.game";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mygdx.game;
 				PRODUCT_NAME = "my-gdx-game";
 				STRIP_STYLE = "non-global";
 			};
@@ -545,7 +557,7 @@
 					"${MOE_OTHER_LDFLAGS}",
 					"$(LIBGDX_NATIVES)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.mygdx.game";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mygdx.game;
 				PRODUCT_NAME = "my-gdx-game";
 				STRIP_STYLE = "non-global";
 			};
