@@ -20,6 +20,7 @@ public class MyGDXGame extends ApplicationAdapter {
 	private SpriteBatch batch;
     private OrthographicCamera camera;
 
+    private static int GRID_SIZE = 32; //square size
 	private Texture sword;
     private Texture grass;
     private Texture outline;
@@ -28,7 +29,8 @@ public class MyGDXGame extends ApplicationAdapter {
 
     private Tile[][] grid;
     private ArrayList<Unit> units;
-    private static int TEXTURE_SIZE = 32; //square size
+    private int turn;
+    private int tick;
 	
 	@Override
 	public void create () {
@@ -56,6 +58,7 @@ public class MyGDXGame extends ApplicationAdapter {
 
         units = new ArrayList<Unit>();
         units.add(new Unit("Joe", sword, 0, 0));
+        units.add(new Unit("Enemy", sword, 3, 3));
 
         grid = new Tile[10][10];
         for (int x = 0; x < grid.length; x++) {
@@ -84,17 +87,28 @@ public class MyGDXGame extends ApplicationAdapter {
     }
 
 	public void updateState() {
+        tick = (tick + 1) % (Integer.MAX_VALUE - 1); // for good luck
+
         int speed = 10;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.translate(-speed, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.translate(speed, 0);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.translate(0, -speed);
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.translate(0, speed);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.translate(0, speed);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.translate(0, -speed);
         camera.update();
+
+        if (turn == 1 && tick % 60 == 0) { // technically means variable speed but who cares.
+            units.get(1).setGridX(rint(grid.length));
+            units.get(1).setGridY(rint(grid.length));
+            turn = 0;
+        }
     }
 
     public void touch() {
         GridPoint point = screenToGrid(Gdx.input.getX(), Gdx.input.getY());
-        units.get(0).setGridPoint(point);
+        if (turn == 0) {
+            units.get(0).setGridPoint(point);
+            turn = 1;
+        }
     }
 
     public Vector3 screenToWorld(float screenX, float screenY) {
@@ -107,7 +121,7 @@ public class MyGDXGame extends ApplicationAdapter {
 
     public GridPoint worldToGrid(float worldX, float worldY) {    // may want to create a custom ¬
                                                             // Coordinate instead of using Vector2
-        return new GridPoint((int) (worldX / TEXTURE_SIZE), (int) (worldY / TEXTURE_SIZE));
+        return new GridPoint((int) (worldX / GRID_SIZE), (int) (worldY / GRID_SIZE));
     }
 
     public GridPoint screenToGrid(float screenX, float screenY) {
@@ -122,13 +136,13 @@ public class MyGDXGame extends ApplicationAdapter {
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
                 Tile t = grid[x][y];
-                int drawX = x * TEXTURE_SIZE;
-                int drawY = y * TEXTURE_SIZE;
+                int drawX = x * GRID_SIZE;
+                int drawY = y * GRID_SIZE;
                 batch.draw(tileTexture(t), drawX, drawY);
             }
         }
         for (Unit unit : units) {
-            batch.draw(unit.getTexture(), unit.getGridX() * TEXTURE_SIZE, unit.getGridY() * TEXTURE_SIZE);
+            batch.draw(unit.getTexture(), unit.getGridX() * GRID_SIZE, unit.getGridY() * GRID_SIZE);
         }
         batch.end();
     }
@@ -142,6 +156,8 @@ public class MyGDXGame extends ApplicationAdapter {
     }
 
     public float rfloat() {return (float) Math.random();}
+
+    public int rint(int below) {return (int) (Math.random() * below);}
 	
 	@Override
 	public void dispose () {
