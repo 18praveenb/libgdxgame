@@ -14,21 +14,7 @@ public class Tile {
 
     private Terrain terrain;
 
-    public int getOccupant() {
-        return occupant;
-    }
-
-    public void setOccupant(int occupant) {
-        this.occupant = occupant;
-    }
-
-    /**
-     * The int address of the occupant in array of characters. _definitelyobjectoriented
-     */
-    private int occupant;
-
     public Tile(Terrain terrain) {
         this.terrain = terrain;
-        this.occupant = -1;
     }
 }

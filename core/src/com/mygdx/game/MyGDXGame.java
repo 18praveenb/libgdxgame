@@ -2,33 +2,45 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
 public class MyGDXGame extends ApplicationAdapter {
 	private SpriteBatch batch;
+    private OrthographicCamera camera;
+
 	private Texture sword;
     private Texture grass;
     private Texture outline;
     private Music music;
     private Sound sound;
+
     private Tile[][] grid;
-    private ArrayList<Texture> characters;
+    private ArrayList<Unit> units;
     private static int TEXTURE_SIZE = 32; //square size
 	
 	@Override
 	public void create () {
         batch = new SpriteBatch();
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.position.set(-camera.viewportWidth/2, -camera.viewportHeight/2, 0);
+        camera.update();
+
         sword = new Texture(Gdx.files.internal("sword.png"));
         grass = new Texture(Gdx.files.internal("grass.png"));
         outline = new Texture(Gdx.files.internal("outline.png"));
+
         sound = Gdx.audio.newSound(Gdx.files.internal("sound.mp3"));
         music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
         music.setLooping(true);
@@ -42,8 +54,8 @@ public class MyGDXGame extends ApplicationAdapter {
             }
         });
 
-        characters = new ArrayList<Texture>();
-        characters.add(sword);
+        units = new ArrayList<Unit>();
+        units.add(new Unit("Joe", sword, 0, 0));
 
         grid = new Tile[10][10];
         for (int x = 0; x < grid.length; x++) {
@@ -51,9 +63,13 @@ public class MyGDXGame extends ApplicationAdapter {
                 grid[x][y] = new Tile(Tile.Terrain.GRASS);
             }
         }
-
-        grid[0][0].setOccupant(0);
 	}
+
+	@Override
+    public void resize(int width, int height) {
+        camera.setToOrtho(false, width, height);
+        camera.update();
+    }
 
 	@Override
 	public void render () {
@@ -68,13 +84,40 @@ public class MyGDXGame extends ApplicationAdapter {
     }
 
 	public void updateState() {
+        int speed = 10;
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.translate(-speed, 0);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.translate(speed, 0);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.translate(0, -speed);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.translate(0, speed);
+        camera.update();
     }
 
     public void touch() {
+        GridPoint point = screenToGrid(Gdx.input.getX(), Gdx.input.getY());
+        units.get(0).setGridPoint(point);
+    }
 
+    public Vector3 screenToWorld(float screenX, float screenY) {
+        return camera.unproject(new Vector3(screenX, screenY, 0));
+    }
+
+    public Vector3 worldToScreen(float worldX, float worldY) {
+        return camera.project(new Vector3(worldX, worldY, 0));
+    }
+
+    public GridPoint worldToGrid(float worldX, float worldY) {    // may want to create a custom ¬
+                                                            // Coordinate instead of using Vector2
+        return new GridPoint((int) (worldX / TEXTURE_SIZE), (int) (worldY / TEXTURE_SIZE));
+    }
+
+    public GridPoint screenToGrid(float screenX, float screenY) {
+        Vector3 world = screenToWorld(screenX, screenY);
+        return worldToGrid(world.x, world.y);
     }
 
     public void drawFrame() {
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
@@ -82,9 +125,10 @@ public class MyGDXGame extends ApplicationAdapter {
                 int drawX = x * TEXTURE_SIZE;
                 int drawY = y * TEXTURE_SIZE;
                 batch.draw(tileTexture(t), drawX, drawY);
-                Texture character = tileCharacter(t);
-                if (character != null) batch.draw(character, drawX, drawY);
             }
+        }
+        for (Unit unit : units) {
+            batch.draw(unit.getTexture(), unit.getGridX() * TEXTURE_SIZE, unit.getGridY() * TEXTURE_SIZE);
         }
         batch.end();
     }
@@ -94,13 +138,7 @@ public class MyGDXGame extends ApplicationAdapter {
             case GRASS:
                 return grass;
         }
-        throw new RuntimeException("what happened?");
-    }
-
-    private Texture tileCharacter(Tile tile) {
-        int occupant = tile.getOccupant();
-        if (occupant == -1) return null;
-        return characters.get(occupant);
+        throw new RuntimeException("error in getTexture method");
     }
 
     public float rfloat() {return (float) Math.random();}
