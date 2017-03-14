@@ -173,11 +173,11 @@
 		};
 		9321BAC1BB8E4182ACD9CFB0 /* Multi-OS Engine */ = {
 			isa = PBXGroup;
-			name = "Multi-OS Engine";
-			sourceTree = "<group>";
 			children = (
 				A018FC2BDEEB04DB304D2C97 /* moe-main-interfaces.m */,
 			);
+			name = "Multi-OS Engine";
+			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
@@ -232,6 +232,7 @@
 					};
 					58C6F5231DA66CB600309CB6 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = QHQQ37XN26;
 					};
 				};
 			};
@@ -496,6 +497,7 @@
 			baseConfigurationReference = 5817739D1E37A10D004E28A9 /* custom.xcconfig */;
 			buildSettings = {
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = QHQQ37XN26;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -532,6 +534,7 @@
 			baseConfigurationReference = 5817739D1E37A10D004E28A9 /* custom.xcconfig */;
 			buildSettings = {
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = QHQQ37XN26;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

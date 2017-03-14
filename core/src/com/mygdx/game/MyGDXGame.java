@@ -2,11 +2,15 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.assets.AssetManager;
+
+import java.util.ArrayList;
 
 public class MyGDXGame extends ApplicationAdapter {
 	private SpriteBatch batch;
@@ -14,28 +18,41 @@ public class MyGDXGame extends ApplicationAdapter {
     private Texture grass;
     private Texture outline;
     private Music music;
-    private int soldierX, soldierY;
-    private GridItem[][] grid;
-    /**
-     * Textures are squares with this side length.
-     */
-    private static int TEXTURE_SIZE = 32;
+    private Sound sound;
+    private Tile[][] grid;
+    private ArrayList<Texture> characters;
+    private static int TEXTURE_SIZE = 32; //square size
 	
 	@Override
 	public void create () {
         batch = new SpriteBatch();
-        sword = new Texture("sword.png");
-        grass = new Texture("grass.png");
-        outline = new Texture("outline.png");
+        sword = new Texture(Gdx.files.internal("sword.png"));
+        grass = new Texture(Gdx.files.internal("grass.png"));
+        outline = new Texture(Gdx.files.internal("outline.png"));
+        sound = Gdx.audio.newSound(Gdx.files.internal("sound.mp3"));
         music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
         music.setLooping(true);
         music.play();
-        grid = new GridItem[10][10];
+
+        Gdx.input.setInputProcessor(new InputAdapter () {
+            @Override
+            public boolean touchUp(int x, int y, int pointer, int button) {
+                touch();
+                return true;
+            }
+        });
+
+        characters = new ArrayList<Texture>();
+        characters.add(sword);
+
+        grid = new Tile[10][10];
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
-                grid[x][y] = new GridItem(false);
+                grid[x][y] = new Tile(Tile.Terrain.GRASS);
             }
         }
+
+        grid[0][0].setOccupant(0);
 	}
 
 	@Override
@@ -51,31 +68,39 @@ public class MyGDXGame extends ApplicationAdapter {
     }
 
 	public void updateState() {
-        if (Gdx.input.isTouched()) {
-//            int x = (Gdx.input.getX())/TEXTURE_SIZE;
-//            int y = (480 - Gdx.input.getY())/TEXTURE_SIZE; // 480 - is temporary hack.
-//            if (x >= 0 && x < grid.length && y >=0 && y < grid[0].length) {
-//                GridItem square = grid[x][y];
-//                square.setSoldier(!square.isSoldier());
-//            }
-            soldierX = (Gdx.input.getX())/TEXTURE_SIZE;
-            soldierY = (Gdx.graphics.getHeight() - Gdx.input.getY())/TEXTURE_SIZE; // 480 - is temporary hack.
-        }
+    }
+
+    public void touch() {
+
     }
 
     public void drawFrame() {
         batch.begin();
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
-                batch.draw(grass, x*TEXTURE_SIZE, y*TEXTURE_SIZE);
-                batch.setColor(rfloat(), rfloat(), rfloat(), 1);
-                batch.draw(outline, x*TEXTURE_SIZE, y*TEXTURE_SIZE);
-                batch.setColor(1, 1, 1, 1);
-//                if (grid[x][y].isSoldier()) batch.draw(sword, x*TEXTURE_SIZE, y*TEXTURE_SIZE);
+                Tile t = grid[x][y];
+                int drawX = x * TEXTURE_SIZE;
+                int drawY = y * TEXTURE_SIZE;
+                batch.draw(tileTexture(t), drawX, drawY);
+                Texture character = tileCharacter(t);
+                if (character != null) batch.draw(character, drawX, drawY);
             }
         }
-        batch.draw(sword, soldierX*TEXTURE_SIZE, soldierY*TEXTURE_SIZE);
         batch.end();
+    }
+
+    private Texture tileTexture(Tile tile) {
+        switch (tile.getTerrain()) {
+            case GRASS:
+                return grass;
+        }
+        throw new RuntimeException("what happened?");
+    }
+
+    private Texture tileCharacter(Tile tile) {
+        int occupant = tile.getOccupant();
+        if (occupant == -1) return null;
+        return characters.get(occupant);
     }
 
     public float rfloat() {return (float) Math.random();}
@@ -84,5 +109,9 @@ public class MyGDXGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		sword.dispose();
+        grass.dispose();
+        music.dispose();
+        sound.dispose();
+        outline.dispose();
 	}
 }
