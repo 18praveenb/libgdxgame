@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -50,8 +51,20 @@ public class MyGDXGame extends ApplicationAdapter {
 
         Gdx.input.setInputProcessor(new InputAdapter () {
             @Override
-            public boolean touchUp(int x, int y, int pointer, int button) {
-                touch();
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                _touchUp();
+                return true;
+            }
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                _touchDragged();
+                return true;
+            }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                _touchDown();
                 return true;
             }
         });
@@ -86,29 +99,45 @@ public class MyGDXGame extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
 
+    int enemy_turn_timer = -1;
+    final int enemy_turn_time = 60;
+
 	public void updateState() {
         tick = (tick + 1) % (Integer.MAX_VALUE - 1); // for good luck
 
-        int speed = 10;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) camera.translate(-speed, 0);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) camera.translate(speed, 0);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) camera.translate(0, speed);
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) camera.translate(0, -speed);
-        camera.update();
+        if (turn == 1) {
+            if (enemy_turn_timer < 0) {
+                enemy_turn_timer = enemy_turn_time;
+            }
+            else if (enemy_turn_timer > 0) {
+                enemy_turn_timer -= 1;
+            }
+            else {
+                units.get(1).setGridX(rint(grid.length));
+                units.get(1).setGridY(rint(grid.length));
+                turn = 0;
+                enemy_turn_timer = enemy_turn_time;
+            }
+        }
+    }
 
-        if (turn == 1 && tick % 60 == 0) { // technically means variable speed but who cares.
-            units.get(1).setGridX(rint(grid.length));
-            units.get(1).setGridY(rint(grid.length));
-            turn = 0;
+    public void _touchDown() {
+
+    }
+
+    public void _touchDragged() {
+        camera.translate(Gdx.input.getDeltaX(), Gdx.input.getDeltaY());
+    }
+
+    public void _touchUp() {
+        GridPoint point = screenToGrid(Gdx.input.getX(), Gdx.input.getY());
+        Tile t = grid[point.getX()][point.getY()];
+        if (turn == 0) {
+            grid[point.getX()][point.getY()].setHighlight(Color.RED);
         }
     }
 
     public void touch() {
-        GridPoint point = screenToGrid(Gdx.input.getX(), Gdx.input.getY());
-        if (turn == 0) {
-            units.get(0).setGridPoint(point);
-            turn = 1;
-        }
     }
 
     public Vector3 screenToWorld(float screenX, float screenY) {
@@ -139,6 +168,9 @@ public class MyGDXGame extends ApplicationAdapter {
                 int drawX = x * GRID_SIZE;
                 int drawY = y * GRID_SIZE;
                 batch.draw(tileTexture(t), drawX, drawY);
+                batch.setColor(t.getHighlight());
+                batch.draw(outline, drawX, drawY);
+                batch.setColor(Color.WHITE);
             }
         }
         for (Unit unit : units) {
