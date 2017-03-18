@@ -24,6 +24,7 @@ public class MyGDXGame extends ApplicationAdapter {
     private static int GRID_SIZE = 32; //square size
 	private Texture sword;
     private Texture grass;
+    private Texture lapis_wall;
     private Texture outline;
     private Texture sage;
     private Music music;
@@ -43,6 +44,7 @@ public class MyGDXGame extends ApplicationAdapter {
 
         sword = new Texture(Gdx.files.internal("sword.png"));
         grass = new Texture(Gdx.files.internal("grass.png"));
+        lapis_wall = new Texture(Gdx.files.internal("lapis_wall.png"));
         outline = new Texture(Gdx.files.internal("outline.png"));
         sage = new Texture(Gdx.files.internal("sage.png"));
 
@@ -79,7 +81,13 @@ public class MyGDXGame extends ApplicationAdapter {
         grid = new Tile[10][10];
         for (int x = 0; x < grid.length; x++) {
             for (int y = 0; y < grid[0].length; y++) {
-                grid[x][y] = new Tile(Tile.Terrain.GRASS);
+                if(y==9)
+                {
+                    grid[x][y] = new Tile(Tile.Terrain.LAPIS_WALL);
+                }
+                else {
+                    grid[x][y] = new Tile(Tile.Terrain.GRASS);
+                }
             }
         }
 	}
@@ -186,6 +194,8 @@ public class MyGDXGame extends ApplicationAdapter {
         switch (tile.getTerrain()) {
             case GRASS:
                 return grass;
+            case LAPIS_WALL:
+                return lapis_wall;
         }
         throw new RuntimeException("error in getTexture method");
     }
@@ -198,7 +208,9 @@ public class MyGDXGame extends ApplicationAdapter {
 	public void dispose () {
 		batch.dispose();
 		sword.dispose();
+        sage.dispose();
         grass.dispose();
+        lapis_wall.dispose();
         music.dispose();
         sound.dispose();
         outline.dispose();

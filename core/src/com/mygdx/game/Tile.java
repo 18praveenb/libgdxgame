@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Tile {
 
-    public enum Terrain {GRASS}
+    public enum Terrain {GRASS, LAPIS_WALL}
 
     public Terrain getTerrain() {
         return terrain;
