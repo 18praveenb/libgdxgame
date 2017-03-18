@@ -22,16 +22,12 @@ public class MyGDXGame extends ApplicationAdapter {
     private OrthographicCamera camera;
 
     private static int GRID_SIZE = 32; //square size
-<<<<<<< HEAD
 	private Texture sword;
     private Texture grass;
     private Texture outline;
     private Texture sage;
     private Music music;
     private Sound sound;
-=======
-    private AssetManager manager;
->>>>>>> origin/master
 
     private Tile[][] grid;
     private ArrayList<Unit> units;
@@ -184,6 +180,14 @@ public class MyGDXGame extends ApplicationAdapter {
             batch.draw(unit.getTexture(), unit.getGridX() * GRID_SIZE, unit.getGridY() * GRID_SIZE);
         }
         batch.end();
+    }
+
+    private Texture tileTexture(Tile tile) {
+        switch (tile.getTerrain()) {
+            case GRASS:
+                return grass;
+        }
+        throw new RuntimeException("error in getTexture method");
     }
 
     public float rfloat() {return (float) Math.random();}
