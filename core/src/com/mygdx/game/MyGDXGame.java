@@ -25,6 +25,7 @@ public class MyGDXGame extends ApplicationAdapter {
 	private Texture sword;
     private Texture grass;
     private Texture outline;
+    private Texture sage;
     private Music music;
     private Sound sound;
 
@@ -43,6 +44,7 @@ public class MyGDXGame extends ApplicationAdapter {
         sword = new Texture(Gdx.files.internal("sword.png"));
         grass = new Texture(Gdx.files.internal("grass.png"));
         outline = new Texture(Gdx.files.internal("outline.png"));
+        sage = new Texture(Gdx.files.internal("sage.png"));
 
         sound = Gdx.audio.newSound(Gdx.files.internal("sound.mp3"));
         music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
@@ -72,6 +74,7 @@ public class MyGDXGame extends ApplicationAdapter {
         units = new ArrayList<Unit>();
         units.add(new Unit("Joe", sword, 0, 0));
         units.add(new Unit("Enemy", sword, 3, 3));
+        units.add(new Unit("Diogenes", sage, 0, 4));
 
         grid = new Tile[10][10];
         for (int x = 0; x < grid.length; x++) {
