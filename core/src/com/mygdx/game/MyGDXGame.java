@@ -18,22 +18,13 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class MyGDXGame extends ApplicationAdapter {
+    private AssetManager manager;
 	private SpriteBatch batch;
     private OrthographicCamera camera;
-
-    private static int GRID_SIZE = 32; //square size
-	private Texture sword;
-    private Texture grass;
-    private Texture lapis_wall;
-    private Texture outline;
-    private Texture sage;
-    private Music music;
-    private Sound sound;
-
-    private Tile[][] grid;
-    private ArrayList<Unit> units;
+    private Level level;
     private int turn;
     private int tick;
+    private static int GRID_SIZE = 32; //square size
 	
 	@Override
 	public void create () {
@@ -41,17 +32,8 @@ public class MyGDXGame extends ApplicationAdapter {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.position.set(-camera.viewportWidth/2, -camera.viewportHeight/2, 0);
         camera.update();
-
-        sword = new Texture(Gdx.files.internal("sword.png"));
-        grass = new Texture(Gdx.files.internal("grass.png"));
-        lapis_wall = new Texture(Gdx.files.internal("lapis_wall.png"));
-        outline = new Texture(Gdx.files.internal("outline.png"));
-        sage = new Texture(Gdx.files.internal("sage.png"));
-
-        sound = Gdx.audio.newSound(Gdx.files.internal("sound.mp3"));
-        music = Gdx.audio.newMusic(Gdx.files.internal("music.ogg"));
-        music.setLooping(true);
-        music.play();
+        manager = new AssetManager();
+        level = new Level("level_1.txt");
 
         Gdx.input.setInputProcessor(new InputAdapter () {
             @Override
@@ -72,24 +54,6 @@ public class MyGDXGame extends ApplicationAdapter {
                 return true;
             }
         });
-
-        units = new ArrayList<Unit>();
-        units.add(new Unit("Joe", sword, 0, 0));
-        units.add(new Unit("Enemy", sword, 3, 3));
-        units.add(new Unit("Diogenes", sage, 0, 4));
-
-        grid = new Tile[10][10];
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[0].length; y++) {
-                if(y==9)
-                {
-                    grid[x][y] = new Tile(Tile.Terrain.LAPIS_WALL);
-                }
-                else {
-                    grid[x][y] = new Tile(Tile.Terrain.GRASS);
-                }
-            }
-        }
 	}
 
 	@Override
@@ -99,7 +63,7 @@ public class MyGDXGame extends ApplicationAdapter {
     }
 
 	@Override
-	public void render () {
+	public void render() {
         clearScreen();
         updateState();
         drawFrame();
@@ -124,8 +88,6 @@ public class MyGDXGame extends ApplicationAdapter {
                 enemy_turn_timer -= 1;
             }
             else {
-                units.get(1).setGridX(rint(grid.length));
-                units.get(1).setGridY(rint(grid.length));
                 turn = 0;
                 enemy_turn_timer = enemy_turn_time;
             }
@@ -142,10 +104,6 @@ public class MyGDXGame extends ApplicationAdapter {
 
     public void _touchUp() {
         GridPoint point = screenToGrid(Gdx.input.getX(), Gdx.input.getY());
-        Tile t = grid[point.getX()][point.getY()];
-        if (turn == 0) {
-            grid[point.getX()][point.getY()].setHighlight(Color.RED);
-        }
     }
 
     public void touch() {
@@ -173,31 +131,7 @@ public class MyGDXGame extends ApplicationAdapter {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        for (int x = 0; x < grid.length; x++) {
-            for (int y = 0; y < grid[0].length; y++) {
-                Tile t = grid[x][y];
-                int drawX = x * GRID_SIZE;
-                int drawY = y * GRID_SIZE;
-                batch.draw(tileTexture(t), drawX, drawY);
-                batch.setColor(t.getHighlight());
-                batch.draw(outline, drawX, drawY);
-                batch.setColor(Color.WHITE);
-            }
-        }
-        for (Unit unit : units) {
-            batch.draw(unit.getTexture(), unit.getGridX() * GRID_SIZE, unit.getGridY() * GRID_SIZE);
-        }
         batch.end();
-    }
-
-    private Texture tileTexture(Tile tile) {
-        switch (tile.getTerrain()) {
-            case GRASS:
-                return grass;
-            case LAPIS_WALL:
-                return lapis_wall;
-        }
-        throw new RuntimeException("error in getTexture method");
     }
 
     public float rfloat() {return (float) Math.random();}
@@ -207,12 +141,5 @@ public class MyGDXGame extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		batch.dispose();
-		sword.dispose();
-        sage.dispose();
-        grass.dispose();
-        lapis_wall.dispose();
-        music.dispose();
-        sound.dispose();
-        outline.dispose();
 	}
 }
