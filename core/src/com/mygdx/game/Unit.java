@@ -14,6 +14,14 @@ public class Unit {
     private Texture texture;
     private String name;
 
+    //Unit combat stats
+    private int strength;
+    private int magic;
+    private int defense;
+    private int resistance;
+    private int speed;
+    private int skill;
+
     public int getGridX() {
         return gridX;
     }
@@ -45,6 +53,18 @@ public class Unit {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getStrength() { return strength; }
+
+    public int getMagic() { return magic; }
+
+    public int getDefense() { return defense; }
+
+    public int getResistance() { return resistance; }
+
+    public int getSpeed() { return speed; }
+
+    public int getSkill() { return skill; }
 
     public void setGridPoint(GridPoint point) {
         this.gridX = point.getX();
