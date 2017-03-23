@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 
 public class Tile {
 
-    public enum Terrain {GRASS, LAPIS_WALL}
+    public enum Terrain {LAND}
 
     public Terrain getTerrain() {
         return terrain;
@@ -26,7 +26,7 @@ public class Tile {
 
     private Color highlight;
 
-    public Tile(Terrain terrain) {
+    public Tile(String information) {
         this.terrain = terrain;
         this.highlight = Color.CLEAR;
     }

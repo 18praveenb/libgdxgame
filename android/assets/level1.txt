@@ -1,7 +1,11 @@
-*..^^^^^
-....*..^
-.....*.^
+8:4
 ...^^^^^
-. ubasic sword player
-. ubasic sword enemy
-. ubasic sword enemy
+.......^
+.......^
+...^^^^^
+1.unit:sword:enemy:health_10:armor_20
+2.unit:sword:enemy
+3.unit:sword:enemy
+
+
+uint.sword:enemy(3,7)(49690
