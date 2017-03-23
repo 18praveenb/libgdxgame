@@ -72,9 +72,13 @@ public class Unit {
     }
 
     public Unit(String[] parameters) {
-        this.gridX = gridX;
-        this.gridY = gridY;
-        this.texture = texture;
-        this.name = name;
+        for (String parameterString: parameters) {
+            String[] parameter = parseParameter(parameterString);
+            if parameter[0].equals("tex")
+        }
+    }
+
+    private String[] parseParameter(String parameter) {
+        return parameter.split("_");
     }
 }
