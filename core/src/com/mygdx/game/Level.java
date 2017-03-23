@@ -14,40 +14,33 @@ public class Level {
     private Tile[][] tiles;
     private Unit[][] units;
 
-    // Variables only used during initialization
-    private int numRows;
-    private int numCols;
-    private int numUnits;
-    private String[] rows;
-
     public Level(String name) {
-        determineNumbers(name);
-        populateTiles();
-        populateUnits();
-    }
+        // Load the rows
+        String[] rows = Gdx.files.internal(name).readString().split("\n");
 
-    private void determineNumbers(String name) {
-        rows = Gdx.files.internal(name).readString().split("\n");
-        numRows = rows.length;
-        numUnits = 0;
-        numCols = rows[0].length();
-        for (int ir = 0; ir < numRows; ++ir) {
-            for (int jc = 0; jc < numCols; ++jc) {
-                String character = rows[ir].substring(jc, jc + 1);
-                if (character.equals("*")) {
-                    --numRows;
-                    ++numUnits;
-                }
-            }
+        //Pluck the dimensions and dimension tile, unit arrays
+        // Filespec: first line should be numCols:numRows (width:height)
+        String[] dimensions = rowComponents(rows[0]);
+        int numCols = Integer.parseInt(dimensions[0]);
+        if numCols != rows[1].length() {throw new RuntimeException("Mismatch");}
+        int numRows = Integer.parseInt(dimensions[1]);
+        tiles = new Tile[numRows][numCols];
+        units = new Unit[numRows][numCols];
+
+        // Create the tiles. One-indexed for rows only because of initial line.
+        for (int row = 1; row <= numRows; row++) {for (int col = 0; col < numCols; col++) {
+            String character = rows[row].substring(col, col + 1);
+            tiles[row][col] = new Tile(character);
+        }}
+
+        // Create the units
+        for (int row = numRows; row < rows.length; row++) {
+            Unit unit = new Unit()
         }
     }
 
-    private void populateTiles() {
-
-    }
-
-    private void populateUnits() {
-
+    private String[] rowComponents(String row) {
+        return row.split(":");
     }
 
 }

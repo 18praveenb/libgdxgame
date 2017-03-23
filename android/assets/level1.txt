@@ -3,7 +3,7 @@
 .......^
 .......^
 ...^^^^^
-1.unit:sword:enemy:health_10:armor_20
+1.unit:texture_sword:control_enemy:health_10:armor_20
 2.unit:sword:enemy
 3.unit:sword:enemy
 

@@ -51,7 +51,7 @@ public class Unit {
         this.gridY = point.getY();
     }
 
-    public Unit(String name, Texture texture, int gridX, int gridY) {
+    public Unit(String[] parameters) {
         this.gridX = gridX;
         this.gridY = gridY;
         this.texture = texture;
