@@ -3,9 +3,4 @@
 .......^
 .......^
 ...^^^^^
-1.unit:texture_sword:control_enemy:health_10:armor_20
-2.unit:sword:enemy
-3.unit:sword:enemy
-
-
-uint.sword:enemy(3,7)(49690
+1:1:unit:tex_sword.png:str_10:def_10

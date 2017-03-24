@@ -25,7 +25,10 @@ public class GridManager extends Manager {
     public void drawFrame() {
         super.drawFrame();
         getBatch().begin();
-
+        for (int row = 0; row < level.getNumRows(); row++)
+            for(int col = 0; col < level.getNumCols(); col++) {
+            getBatch().draw(level.getTiles()[row][col].getTexture(););
+        }
         getBatch().end();
     }
 

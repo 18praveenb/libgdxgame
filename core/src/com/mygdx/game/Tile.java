@@ -1,8 +1,12 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 public class Tile {
+
+    public static final Texture tex = new Texture(Gdx.)
 
     public enum Terrain {LAND}
 
@@ -26,8 +30,19 @@ public class Tile {
 
     private Color highlight;
 
-    public Tile(String information) {
-        this.terrain = terrain;
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    private Texture texture;
+
+    public Tile(String character) {
+        this.terrain = Terrain.LAND;
+        if
         this.highlight = Color.CLEAR;
     }
 }
