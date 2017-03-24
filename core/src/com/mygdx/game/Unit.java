@@ -8,9 +8,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Unit {
-
-    private int gridX;
-    private int gridY;
+    
     private Texture texture;
     private String name;
 
@@ -21,22 +19,6 @@ public class Unit {
     private int resistance;
     private int speed;
     private int skill;
-
-    public int getGridX() {
-        return gridX;
-    }
-
-    public void setGridX(int gridX) {
-        this.gridX = gridX;
-    }
-
-    public int getGridY() {
-        return gridY;
-    }
-
-    public void setGridY(int gridY) {
-        this.gridY = gridY;
-    }
 
     public Texture getTexture() {
         return texture;
@@ -65,11 +47,6 @@ public class Unit {
     public int getSpeed() { return speed; }
 
     public int getSkill() { return skill; }
-
-    public void setGridPoint(GridPoint point) {
-        this.gridX = point.getX();
-        this.gridY = point.getY();
-    }
 
     public Unit(String[] parameters) {
         for (String parameterString: parameters) {
