@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -8,17 +9,13 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Unit {
-    
+
     private Texture texture;
     private String name;
 
     //Unit combat stats
     private int strength;
-    private int magic;
     private int defense;
-    private int resistance;
-    private int speed;
-    private int skill;
 
     public Texture getTexture() {
         return texture;
@@ -36,22 +33,28 @@ public class Unit {
         this.name = name;
     }
 
-    public int getStrength() { return strength; }
+    public int getStrength() {
+        return strength;
+    }
 
-    public int getMagic() { return magic; }
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
 
-    public int getDefense() { return defense; }
+    public int getDefense() {
+        return defense;
+    }
 
-    public int getResistance() { return resistance; }
-
-    public int getSpeed() { return speed; }
-
-    public int getSkill() { return skill; }
+    public void setDefense(int defense) {
+        this.defense = defense;
+    }
 
     public Unit(String[] parameters) {
         for (String parameterString: parameters) {
             String[] parameter = parseParameter(parameterString);
-            if parameter[0].equals("tex")
+            if (parameter[0].equals("tex")) setTexture(new Texture(Gdx.files.internal(parameter[1])));
+            if (parameter[0].equals("str")) setStrength(Integer.parseInt(parameter[1]));
+            if (parameter[0].equals("def")) setDefense(Integer.parseInt(parameter[1]));
         }
     }
 
