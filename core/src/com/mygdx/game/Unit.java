@@ -61,9 +61,9 @@ public class Unit {
 
     public Unit(Level level, String[][] parameters) {
         for (String[] parameter: parameters) {
-            if (parameter[0].equals("tex")) setTexture(level.getTexture(parameter[1]));
-            if (parameter[0].equals("str")) setStrength(Integer.parseInt(parameter[1]));
-            if (parameter[0].equals("def")) setDefense(Integer.parseInt(parameter[1]));
+            if (parameter[0].equals("texture")) texture = level.getTexture(parameter[1]);
+            if (parameter[0].equals("strength")) strength = Integer.parseInt(parameter[1]);
+            if (parameter[0].equals("defense")) defense = Integer.parseInt(parameter[1]);
         }
     }
 }

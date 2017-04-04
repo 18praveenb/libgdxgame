@@ -27,7 +27,10 @@ public class GridManager extends Manager {
         getBatch().begin();
         for (int row = 0; row < level.getNumRows(); row++)
             for(int col = 0; col < level.getNumCols(); col++) {
-            getBatch().draw(level.getTiles()[row][col].getTexture(), col * GRID_SIZE, row * GRID_SIZE);
+                getBatch().draw(level.getTiles()[row][col].getTexture(), col * GRID_SIZE, row * GRID_SIZE);
+                Unit unit = level.getUnits()[row][col];
+                if (unit != null)
+                    getBatch().draw(unit.getTexture(), col * GRID_SIZE, row * GRID_SIZE);
         }
         getBatch().end();
     }

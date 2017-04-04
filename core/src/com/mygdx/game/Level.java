@@ -15,9 +15,9 @@ import java.util.HashMap;
 public class Level {
 
     AssetManager manager;
-    private Tile[][] tiles;
-    private Unit[][] units;
-    private Player[] players;
+    private Tile[][] tiles; // Zero indexed, row-column
+    private Unit[][] units; // Zero indexed, row-column
+    private Player[] players; // One indexed
 
     public Tile[][] getTiles() {
         return tiles;
@@ -37,19 +37,20 @@ public class Level {
 
     public Level(String name) {
         manager = new AssetManager();
-        // Load the rows
+
         String[] rows = Gdx.files.internal(name).readString().split("\n");
 
-        //Pluck the dimensions and dimension tile, unit arrays
-        // Filespec: first line should be numCols:numRows (width:height)
-        String[] dimensions = rowComponents(rows[0]);
-        int numCols = Integer.parseInt(dimensions[0]);
-        if (numCols != rows[1].length()) {
-            throw new RuntimeException("Mismatch");
+        String[][] info = parse(rows[0]);
+        int numRows = -1, numCols = -1, numPlayers = -1;
+        for (String[] parameter : info) {
+            if (parameter[0].equals("rows")) numRows = Integer.parseInt(parameter[1]);
+            else if (parameter[0].equals("columns")) numCols = Integer.parseInt(parameter[1]);
+            else if (parameter[0].equals("players")) numPlayers = Integer.parseInt(parameter[1]);
         }
-        int numRows = Integer.parseInt(dimensions[1]);
+
         tiles = new Tile[numRows][numCols];
         units = new Unit[numRows][numCols];
+        players = new Player[numPlayers + 1]; // To allow for one-indexing of the players
 
         // Create the tiles. One-indexed for rows only because of initial line.
         for (int row = 1; row <= numRows; row++) {
@@ -59,19 +60,27 @@ public class Level {
             }
         }
 
-        // Create the units
+        // Read additional information lines, such as a unit specifier or a player specifier.
         for (int row = numRows + 1; row < rows.length; row++) {
             String[][] components = parse(rows[row]);
             String type = components[0][0];
 
             if (type.equals("player")) {
-
+                int playerNumber = -1;
+                int team = -1;
+                boolean human = true;
+                for (String[] parameter : components) {
+                    if (parameter[0].equals("player")) playerNumber = Integer.parseInt(parameter[1]);
+                    else if (parameter[0].equals("team")) team = Integer.parseInt(parameter[1]);
+                    else if (parameter[0].equals("human")) human = Boolean.parseBoolean(parameter[1]);
+                }
+                players[playerNumber] = new Player(team, human);
             }
 
-            if (type.equals("unit")) {
+            if (type.equals("gridunit")) {
                 int x = Integer.parseInt(components[1][0]);
                 int y = Integer.parseInt(components[2][0]);
-                units[x][y] = new Unit(this, Arrays.copyOfRange(components, 3, components.length));
+                units[x][y] = new Unit(this, Arrays.copyOfRange(components, 4, components.length));
             }
 
         }
