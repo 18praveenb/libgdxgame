@@ -6,8 +6,6 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Tile {
 
-    public static final Texture tex = new Texture(Gdx.)
-
     public enum Terrain {LAND}
 
     public Terrain getTerrain() {
@@ -40,9 +38,10 @@ public class Tile {
 
     private Texture texture;
 
-    public Tile(String character) {
+    public Tile(Level level, String character) {
         this.terrain = Terrain.LAND;
-        if
         this.highlight = Color.CLEAR;
+        if (character.equals(".")) this.texture = level.getTexture("grass.png");
+        else if (character.equals("^")) this.texture = level.getTexture("lapis_wall.png");
     }
 }
