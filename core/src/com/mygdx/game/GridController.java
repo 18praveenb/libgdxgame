@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -11,15 +12,15 @@ import com.badlogic.gdx.math.Vector3;
  * Created by Praveen on 3/23/17.
  */
 
-public class GridManager extends Manager {
+public class GridController extends Controller {
 
     private Level level;
     private int turn;
     private static int GRID_SIZE = 32;
 
-    public GridManager(String levelName) {
+    public GridController(String levelName) {
         super();
-        this.level = new Level(levelName);
+        this.level = new Level(this.getManager(), levelName);
         this.turn = 0;
     }
 

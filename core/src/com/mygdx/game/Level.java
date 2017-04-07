@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class Level {
 
-    AssetManager manager;
+    private Manager manager;
     private Tile[][] tiles; // Zero indexed, row-column
     private Unit[][] units; // Zero indexed, row-column
     private Player[] players; // One indexed
@@ -35,7 +35,11 @@ public class Level {
         return tiles[0].length;
     }
 
-    public Level(String name) {
+    public Manager getManager() {
+        return manager;
+    }
+
+    public Level(Manager manager, String name) {
         manager = new AssetManager();
 
         String[] rows = Gdx.files.internal(name).readString().split("\n");
@@ -91,16 +95,5 @@ public class Level {
         String[][] second = new String[first.length][];
         for (int i = 0; i < first.length; i++) second[i] = first[i].split("_");
         return second;
-    }
-
-    /**
-     * Uses assetManager to ensure that textures for units and tiles are not loaded multiple times.
-     * @param fileName Include the file extension.
-     * @return Texture
-     */
-    public Texture getTexture(String fileName) {
-        manager.load(fileName, Texture.class);
-        manager.finishLoadingAsset(fileName);
-        return manager.get(fileName, Texture.class);
     }
 }

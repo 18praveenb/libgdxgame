@@ -41,7 +41,10 @@ public class Tile {
     public Tile(Level level, String character) {
         this.terrain = Terrain.LAND;
         this.highlight = Color.CLEAR;
-        if (character.equals(".")) this.texture = level.getTexture("grass.png");
-        else if (character.equals("^")) this.texture = level.getTexture("lapis_wall.png");
+
+        String texture = "grass.png";
+        if (character.equals("^")) texture = "lapis_wall.png";
+        // else character == "." we hope
+        this.texture = level.getManager().getNow(texture, Texture.class);
     }
 }
