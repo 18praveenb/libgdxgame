@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Queue;
@@ -28,18 +29,28 @@ public class Font {
         int strlen = str.length();
 
         // Compute the lines
+        ArrayList<ArrayList<Texture>> lines = new ArrayList<ArrayList<Texture>>();
+        float currX = x;
+        for (int i = 0; i < strlen; i++) {
+            Texture glyph = this.getGlyph(str.charAt(i));
+            float glyphWidth = glyph.getWidth();
+            if ((currX + glyphWidth) > (x + width)) {
+                currX = x;
+                lines.add(new ArrayList<Texture>());
+            }
+            else {
+                currX += glyphWidth;
+            }
+            lines.get(lines.size()-1).add(glyph);
+        }
 
         // Compute the height of each line
 
         // Render the lines
 
         for (int i = 0; i < strlen; i++) {
-            Character c = str.charAt(i);
-                String prefix = folderName + "/";
-                if (Character.isUpperCase(c)) prefix = prefix + "uc_";
-                else if (Character.isLowerCase(c)) prefix = prefix + "lc_";
-                String suffix = ".png";
-                Texture glyph = manager.getNow(prefix + c + suffix, Texture.class);
+            Texture glyph =
+
 
                 float postX = currX + glyph.getWidth();
                 if (postX > maxX) {
@@ -65,6 +76,13 @@ public class Font {
             currX += glyph.getWidth();
         }
         glyphQueue.clear();
+    }
+
+    private Texture getGlyph(Character character) {
+        String prefix = folderName + "/";
+        if (Character.isUpperCase(character)) prefix = prefix + "uc_";
+        else if (Character.isLowerCase(character)) prefix = prefix + "lc_";
+        return manager.getNow(prefix + character + ".png", Texture.class);
     }
 
 }
