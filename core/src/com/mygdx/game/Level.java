@@ -56,8 +56,9 @@ public class Level {
         units = new Unit[numRows][numCols];
         players = new Player[numPlayers + 1]; // To allow for one-indexing of the players
 
-        // Create the tiles. One-indexed for rows only because of initial line.
-        for (int row = 1; row <= numRows; row++) {
+        // Create the tiles. One-indexed for rows only because the initial line exists.
+        // Because we build the array from the bottom up, we start with the last row and go up.
+        for (int row = numRows; row >= 1; row--) {
             for (int col = 0; col < numCols; col++) {
                 String character = rows[row].substring(col, col + 1);
                 tiles[row - 1][col] = new Tile(this, character);

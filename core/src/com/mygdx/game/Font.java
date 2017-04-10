@@ -25,12 +25,13 @@ public class Font {
     }
 
     public void drawString(String str, SpriteBatch batch, float x, float y, float width) {
-        float currX = x;
-        float deltaX = 0;
-        float maxX = x + width;
-        float currY = y;
-        float deltaY = 0;
         int strlen = str.length();
+
+        // Compute the lines
+
+        // Compute the height of each line
+
+        // Render the lines
 
         for (int i = 0; i < strlen; i++) {
             Character c = str.charAt(i);
