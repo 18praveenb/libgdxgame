@@ -40,7 +40,7 @@ public class Level {
     }
 
     public Level(Manager manager, String name) {
-        manager = new AssetManager();
+        this.manager = manager;
 
         String[] rows = Gdx.files.internal(name).readString().split("\n");
 

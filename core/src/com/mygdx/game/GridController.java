@@ -63,7 +63,7 @@ public class GridController extends Controller {
                 batch.draw(tile.getTexture(), x, y);
 
                 // Draw outline
-                Texture outline = level.getTexture("outline.png");
+                Texture outline = this.getManager().getNow("outline.png", Texture.class);
                 batch.setColor(tile.getHighlight());
                 batch.draw(outline, x, y);
                 batch.setColor(Color.WHITE);
@@ -72,6 +72,8 @@ public class GridController extends Controller {
                 Unit unit = level.getUnits()[row][col];
                 if (unit != null)
                     batch.draw(unit.getTexture(), x, y);
+
+                (new Font(this.getManager(), "font")).drawString("Hello World", this.getBatch(), 0, 100, 50);
         }
         batch.end();
     }

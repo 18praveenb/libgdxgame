@@ -18,7 +18,7 @@ public class Controller {
     private OrthographicCamera camera;
     private int frame;
 
-    public AssetManager getManager() {
+    public Manager getManager() {
         return manager;
     }
     public SpriteBatch getBatch() {
