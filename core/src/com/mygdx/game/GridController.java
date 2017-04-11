@@ -72,8 +72,8 @@ public class GridController extends Controller {
                 Unit unit = level.getUnits()[row][col];
                 if (unit != null)
                     batch.draw(unit.getTexture(), x, y);
-
-                (new Font(this.getManager(), "font")).drawString("Hello World", this.getBatch(), 0, 100, 50);
+                String s = "HELLO, WORLD! My name is Joe.";
+                (new FontRenderer(this.getManager(), this.getBatch())).drawString(s, 10, 300, 50);
         }
         batch.end();
     }
