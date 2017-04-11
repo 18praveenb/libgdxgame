@@ -72,7 +72,7 @@ public class GridController extends Controller {
                 Unit unit = level.getUnits()[row][col];
                 if (unit != null)
                     batch.draw(unit.getTexture(), x, y);
-                String s = "HELLO, WORLD! My name is Joe.";
+                String s = "HELLO, WORLD! My name is Joe. I am a soldier in the army of Player 1. It is my duty, to serve the player. 0123456789!.";
                 (new FontRenderer(this.getManager(), this.getBatch())).drawString(s, 10, 300, 50);
         }
         batch.end();
