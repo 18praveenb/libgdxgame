@@ -72,8 +72,11 @@ public class GridController extends Controller {
                 Unit unit = level.getUnits()[row][col];
                 if (unit != null)
                     batch.draw(unit.getTexture(), x, y);
-                String s = "HELLO, WORLD! My name is Joe. I am a soldier in the army of Player 1. It is my duty, to serve the player. 0123456789!.";
-                (new FontRenderer(this.getManager(), this.getBatch())).drawString(s, 10, 300, 50);
+
+                // Draw current turn
+                String s = "Player " + Integer.toString(turn + 1) + "'s Turn";
+                Vector3 world = fromCamera(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
+                (new FontRenderer(this.getManager(), this.getBatch())).drawString(s, world.x, world.y, 50);
         }
         batch.end();
     }
@@ -82,6 +85,11 @@ public class GridController extends Controller {
         return screenToGrid(Gdx.input.getX(), convertY(Gdx.input.getY()));
     }
 
+    /**
+     * Only use this for Gdx.input.getY() or other input because they are backwards
+     * @param y
+     * @return
+     */
     public int convertY(int y) {
         return Gdx.graphics.getHeight() - 1 - y;
     }
