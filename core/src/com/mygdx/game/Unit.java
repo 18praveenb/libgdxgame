@@ -16,8 +16,7 @@ public class Unit {
     private int player;
 
     //Unit combat stats
-    private int strength;
-    private int defense;
+    private int moves;
 
     public Texture getTexture() {
         return texture;
@@ -43,27 +42,18 @@ public class Unit {
         this.player = player;
     }
 
-    public int getStrength() {
-        return strength;
+    public int getMoves() {
+        return moves;
     }
 
-    public void setStrength(int strength) {
-        this.strength = strength;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
+    public void setMoves(int moves) {
+        this.moves = moves;
     }
 
     public Unit(Level level, String[][] parameters) {
         for (String[] parameter: parameters) {
             if (parameter[0].equals("texture")) texture = level.getManager().getNow(parameter[1], Texture.class);
-            if (parameter[0].equals("strength")) strength = Integer.parseInt(parameter[1]);
-            if (parameter[0].equals("defense")) defense = Integer.parseInt(parameter[1]);
+            if (parameter[0].equals("moves")) moves = Integer.parseInt(parameter[1]);
         }
     }
 }

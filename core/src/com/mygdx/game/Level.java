@@ -39,6 +39,10 @@ public class Level {
         return manager;
     }
 
+    public Player[] getPlayers() {
+        return players;
+    }
+
     public Level(Manager manager, String name) {
         this.manager = manager;
 
@@ -54,7 +58,7 @@ public class Level {
 
         tiles = new Tile[numRows][numCols];
         units = new Unit[numRows][numCols];
-        players = new Player[numPlayers + 1]; // To allow for one-indexing of the players
+        players = new Player[numPlayers]; // To allow for one-indexing of the players
 
         // Create the tiles. One-indexed for rows only because the initial line exists.
         // Because we build the array from the bottom up, we start with the last row and go up.
@@ -69,17 +73,14 @@ public class Level {
         for (int row = numRows + 1; row < rows.length; row++) {
             String[][] components = parse(rows[row]);
             String type = components[0][0];
-
             if (type.equals("player")) {
                 int playerNumber = -1;
                 int team = -1;
-                boolean human = true;
                 for (String[] parameter : components) {
-                    if (parameter[0].equals("player")) playerNumber = Integer.parseInt(parameter[1]);
+                    if (parameter[0].equals("player")) playerNumber = Integer.parseInt(parameter[1]) - 1;
                     else if (parameter[0].equals("team")) team = Integer.parseInt(parameter[1]);
-                    else if (parameter[0].equals("human")) human = Boolean.parseBoolean(parameter[1]);
                 }
-                players[playerNumber] = new Player(team, human);
+                players[playerNumber] = new HumanPlayer(team);
             }
 
             if (type.equals("gridunit")) {

@@ -15,20 +15,20 @@ import com.badlogic.gdx.math.Vector3;
 public class GridController extends Controller {
 
     private Level level;
-    private int turn;
+    private TurnManager turnManager;
     private static int GRID_SIZE = 32;
 
     public GridController(String levelName) {
         super();
         this.level = new Level(this.getManager(), levelName);
-        this.turn = 0;
+        this.turnManager = new TurnManager(level);
+        this.turnManager.nextTurn();
     }
 
     @Override
     public void touchUp() {
         super.touchUp();
-
-
+        turnManager.gridPointClicked(selectedGridPoint());
     }
 
     @Override
@@ -36,8 +36,8 @@ public class GridController extends Controller {
         super.touchDown();
 
         GridPoint point = selectedGridPoint();
-        int row = point.getY();
-        int col = point.getX();
+        int row = point.getRow();
+        int col = point.getCol();
 
         if ((col >= level.getNumCols()) || (row >= level.getNumRows()))
             return;
@@ -74,9 +74,11 @@ public class GridController extends Controller {
                     batch.draw(unit.getTexture(), x, y);
 
                 // Draw current turn
-                String s = "Player " + Integer.toString(turn + 1) + "'s Turn";
-                Vector3 world = fromCamera(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-                (new FontRenderer(this.getManager(), this.getBatch())).drawString(s, world.x, world.y, 50);
+                String s = "Player " + Integer.toString(turnManager.getTurn() + 1) + "'s Turn";
+//                FontRenderer renderer = new FontRenderer(this.getManager(), this.getBatch());
+//                renderer.setBackgroundColor(Color.WHITE);
+//                Vector3 world = fromCamera(0, 0);
+//                renderer.drawString(s, world.x, world.y, 50);
         }
         batch.end();
     }

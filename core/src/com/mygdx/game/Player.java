@@ -1,16 +1,20 @@
 package com.mygdx.game;
 
 /**
- * Created by Praveen on 4/4/17.
+ * Created by Praveen on 4/14/17.
  */
 
-public class Player {
-    private int team;
-    private boolean human;
+public abstract class Player {
 
-    public Player(int team, boolean human) {
-        this.team = team;
-        this.human = human;
+    private TurnManager turnManager;
+    private int team;
+
+    public TurnManager getTurnManager() {
+        return turnManager;
+    }
+
+    public void setTurnManager(TurnManager turnManager) {
+        this.turnManager = turnManager;
     }
 
     public int getTeam() {
@@ -21,11 +25,7 @@ public class Player {
         this.team = team;
     }
 
-    public boolean isHuman() {
-        return human;
-    }
+    public void gridPointClicked(GridPoint point) {}
 
-    public void setHuman(boolean human) {
-        this.human = human;
-    }
+    public abstract void startMove();
 }

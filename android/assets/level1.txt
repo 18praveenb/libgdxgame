@@ -8,4 +8,5 @@ rows_7:columns_8:players_2
 ....^^^^
 player_1:team_1:human_true
 player_2:team_2:human_true
+bgm:music.ogg
 gridunit:1:1:unit:player_1:texture_sword.png:strength_10:defense_10

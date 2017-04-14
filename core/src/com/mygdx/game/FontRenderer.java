@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -17,6 +18,7 @@ public class FontRenderer {
     private String fontName = "font";
     private float spaceBetweenCharacters = 1; // Pixels
     private float spaceBetweenLines = 1;
+    private Color backgroundColor = Color.CLEAR;
     private Manager manager;
     private SpriteBatch batch;
 
@@ -34,7 +36,8 @@ public class FontRenderer {
         lines.add(new ArrayList<Texture>());
         float currX = x, maxWidth = x + width;
         for (int i = 0; i < strlen; i++) {
-            Texture glyph = this.getGlyph(str.charAt(i));
+            char ch = str.charAt(i);
+            Texture glyph = this.getGlyph(ch);
             float glyphWidth = glyph.getWidth();
             if ((currX + glyphWidth) > maxWidth) {
                 currX = x; // reset for the new line
@@ -70,7 +73,14 @@ public class FontRenderer {
             int numchars = line.size();
             for (int j = 0; j < numchars; j++) {
                 Texture glyph = line.get(j);
+
+                //draw background
+                batch.setColor(backgroundColor);
+                batch.draw(manager.getNow("pixel.png", Texture.class), currX, currY, glyph.getWidth(), glyph.getHeight());
+                batch.setColor(Color.WHITE);
+
                 batch.draw(glyph, currX, currY);
+
                 currX += glyph.getWidth() + spaceBetweenCharacters;
             }
         }
@@ -121,5 +131,13 @@ public class FontRenderer {
 
     public void setBatch(SpriteBatch batch) {
         this.batch = batch;
+    }
+
+    public Color getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(Color backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 }

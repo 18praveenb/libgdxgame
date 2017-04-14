@@ -5,8 +5,14 @@ package com.mygdx.game;
  */
 
 public class GridPoint {
-    private int x, y;
-    public GridPoint(int x, int y) {this.x = x; this.y = y;}
-    public int getX() {return this.x;}
-    public int getY() {return this.y;}
+    private int row, col;
+    public GridPoint(int col, int row) {this.row = row; this.col = col;}
+    public int getRow() {return this.row;}
+    public int getCol() {return this.col;}
+    public <T> T valueIn(T[][] array) {
+        return array[row][col];
+    }
+    public int nonDiagonalDistance(GridPoint destination) {
+        return Math.abs(destination.row - row) + Math.abs(destination.col - col);
+    }
 }
